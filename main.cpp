@@ -39,11 +39,10 @@ int main() {
         }
         
         // move down the tetromino every 0.2 seconds but keeping updating the screen and input 
-        if (EventTriggered(0.2)){
+        if (EventTriggered(0.1)){
             game.nextFrame();
         }
         game.draw();
-        // DrawRectangle(0, 20*19, 20, 20, RED);
 
 
         EndDrawing();

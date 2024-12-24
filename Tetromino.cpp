@@ -1,7 +1,6 @@
 #include "Tetromino.h"
 
-Tetromino::Tetromino(){
-}
+
 
 Tetromino::Tetromino(int x, int y){
     offsetx = x;

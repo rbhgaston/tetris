@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "Board.h"
+#include "Color.h"
 
 
 
@@ -12,6 +13,9 @@ class Tetris{
     public:
         Tetris(){
             board = Board();
+            std::srand(std::time(0));
+            // TODO randomised tetromino
+            curTetromino = ITetromino();
         }
         Tetromino* getCurTetromino(){
             return &curTetromino;
@@ -23,9 +27,8 @@ class Tetris{
         void draw(){
             board.draw();
             for(Position tile : curTetromino.getCurrentRotation()){
-                DrawRectangle((curTetromino.getPosition()->x + tile.x) * TILE_SIZE, (curTetromino.getPosition()->y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, WHITE);
+                DrawRectangle((curTetromino.getPosition()->x + tile.x) * TILE_SIZE, (curTetromino.getPosition()->y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(curTetromino.id));
             }
-            board.display();
         }
         
         bool moveCurTetromino(int dx, int dy){
@@ -55,40 +58,51 @@ class Tetris{
                 moveCurTetromino(0, 1);
             }
             if (IsKeyPressed(KEY_UP)){
-                curTetromino.rotate();
+                rotateCurTetromino();
             }
         }
 
         // computes next state of the game
+        // how to change code to make it accept random tetromino blocks
+
         void nextFrame(){
             curTetromino.move(0, 1);
             bool isColliding = board.isColliding(&curTetromino);
             if (isColliding){
                 curTetromino.move(0, -1);
-                // debug
-                std::cout<<"Colliding"<<std::endl;
+
                 board.addTetromino(&curTetromino, curTetromino.getPosition());
-                srand(time(0));
-                int x;
+
+               
                 
-                Tetromino tetromino = Tetromino();
+                //how to change code to make it accept random tetromino blocks
+
+                Tetromino* newTetromino;
+
+                TetrominoType randomTetrominoType = static_cast<TetrominoType>(rand() % 7);
+
+                switch(randomTetrominoType) {
+                    case I: newTetromino = new ITetromino(); break;
+                    case O: newTetromino = new OTetromino(); break;
+                    case T: newTetromino = new TTetromino(); break;
+                    case S: newTetromino = new STetromino(); break;
+                    case Z: newTetromino = new ZTetromino(); break;
+                    case J: newTetromino = new JTetromino(); break;
+                    case L: newTetromino = new LTetromino(); break;
+                }
+                
+                
+                int x;
                 do{
                     x = rand() % BOARD_WIDTH;
-                }while(!board.isInside(tetromino.setPosition(x,0)));
-                
-                //debug
-                std::cout<<"x: "<<x<<std::endl;
-                curTetromino = Tetromino(x, 0);
-            }
-        
-                
-                // srand(time(0));
-                // int x = rand() % BOARD_WIDTH;
-                // curTetromino = Tetromino(x, 0);
+                }while(!board.isInside(newTetromino->setPosition(x,0)));
 
-
-            
-                
+                if(board.isColliding(newTetromino)){
+                    std::cout<<"Game Over"<<std::endl;
+                    exit(0);
+                }
+                curTetromino = *newTetromino;
+            }                
         }
     private:
         Board board;
@@ -96,6 +110,7 @@ class Tetris{
         Tetromino curTetromino;
 
 };
+
 
 
 

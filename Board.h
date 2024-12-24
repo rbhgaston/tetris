@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "Tetromino.h"
 #include <iostream>
+#include "Color.h"
 
 const int BOARD_WIDTH = 10;
 const int BOARD_HEIGHT = 20;
@@ -13,7 +14,7 @@ class Board{
         Board(){
             for (int i = 0; i < BOARD_WIDTH; i++){
                 for (int j = 0; j < BOARD_HEIGHT; j++){
-                    board[i][j] = 0;
+                    board[i][j] = -1;
                 }
             }
 
@@ -22,7 +23,7 @@ class Board{
 
         void addTetromino(Tetromino *tetromino, Position *pos){
             for (Position &tile : tetromino->getCurrentRotation()){
-                    board[pos->x + tile.x][(pos->y + tile.y)] = 1;
+                    board[pos->x + tile.x][(pos->y + tile.y)] = tetromino->id;
             }
         }
         
@@ -39,7 +40,7 @@ class Board{
         bool isColliding(Tetromino *tetromino){
             Position *pos = tetromino->getPosition();
             for (Position &tile : tetromino->getCurrentRotation()){
-                if (board[pos->x + tile.x][pos->y + tile.y] == 1 || pos->y + tile.y >= BOARD_HEIGHT){
+                if (board[pos->x + tile.x][pos->y + tile.y] != -1 || pos->y + tile.y >= BOARD_HEIGHT){
                     return true;
                 }
             }
@@ -49,8 +50,8 @@ class Board{
         void draw(){
             for (int i = 0; i < BOARD_WIDTH; i++){
                 for (int j = 0; j < BOARD_HEIGHT; j++){
-                    if (board[i][j] == 1){
-                        DrawRectangle(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, WHITE);
+                    if (board[i][j] != -1){
+                        DrawRectangle(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor((TetrominoType)board[i][j]));
                     }
                 }
             }
