@@ -1,38 +1,12 @@
 #pragma once
 #include "raylib.h"
 #include "Tetromino.h"
+#include <ctime>
+#include <cstdlib>
+#include <iostream>
+#include "Board.h"
 
-const int BOARD_WIDTH = 10;
-const int BOARD_HEIGHT = 20;
-const int TILE_SIZE = 20;
 
-class Board{
-    public:
-        int board[BOARD_HEIGHT][BOARD_WIDTH];
-        Board(){
-            for (int i = 0; i < BOARD_HEIGHT; i++){
-                for (int j = 0; j < BOARD_WIDTH; j++){
-                    board[i][j] = 0;
-                }
-            }
-
-        }
-        void addTetrimino(Tetromino *tetromino, Position *pos){
-            for (Position tile : tetromino->getCurrentRotation()){
-                    board[pos->x + tile.y][pos->y + tile.x] = 1;
-            }
-        }
-
-        void draw(){
-            for (int i = 0; i < BOARD_HEIGHT; i++){
-                for (int j = 0; j < BOARD_WIDTH; j++){
-                    if (board[i][j] == 1){
-                        DrawRectangle(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, WHITE);
-                    }
-                }
-            }
-        }
-};
 
 class Tetris{
     public:
@@ -49,12 +23,76 @@ class Tetris{
         void draw(){
             board.draw();
             for(Position tile : curTetromino.getCurrentRotation()){
-                DrawRectangle((curTetromino.getPosition().x + tile.x) * TILE_SIZE, (curTetromino.getPosition().y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, WHITE);
+                DrawRectangle((curTetromino.getPosition()->x + tile.x) * TILE_SIZE, (curTetromino.getPosition()->y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, WHITE);
+            }
+            board.display();
+        }
+        
+        bool moveCurTetromino(int dx, int dy){
+            curTetromino.move(dx, dy);
+            if(!board.isInside(&curTetromino) || board.isColliding(&curTetromino))
+                curTetromino.move(-dx, -dy);
+                return false;
+            return true;
+        }
+
+        bool rotateCurTetromino(){
+            curTetromino.rotate();
+            if(!board.isInside(&curTetromino) || board.isColliding(&curTetromino))
+                curTetromino.unrotate();
+                return false;
+            return true;
+        }
+
+        void handleInput(){
+            if (IsKeyPressed(KEY_LEFT)){
+                moveCurTetromino(-1, 0);
+            }
+            if (IsKeyPressed(KEY_RIGHT)){
+                moveCurTetromino(1, 0);
+            }
+            if (IsKeyPressed(KEY_DOWN)){
+                moveCurTetromino(0, 1);
+            }
+            if (IsKeyPressed(KEY_UP)){
+                curTetromino.rotate();
             }
         }
 
+        // computes next state of the game
+        void nextFrame(){
+            curTetromino.move(0, 1);
+            bool isColliding = board.isColliding(&curTetromino);
+            if (isColliding){
+                curTetromino.move(0, -1);
+                // debug
+                std::cout<<"Colliding"<<std::endl;
+                board.addTetromino(&curTetromino, curTetromino.getPosition());
+                srand(time(0));
+                int x;
+                
+                Tetromino tetromino = Tetromino();
+                do{
+                    x = rand() % BOARD_WIDTH;
+                }while(!board.isInside(tetromino.setPosition(x,0)));
+                
+                //debug
+                std::cout<<"x: "<<x<<std::endl;
+                curTetromino = Tetromino(x, 0);
+            }
+        
+                
+                // srand(time(0));
+                // int x = rand() % BOARD_WIDTH;
+                // curTetromino = Tetromino(x, 0);
+
+
+            
+                
+        }
     private:
         Board board;
+        int nextTetromino = false;
         Tetromino curTetromino;
 
 };
