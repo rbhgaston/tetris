@@ -72,10 +72,7 @@ class Tetris{
                 curTetromino.move(0, -1);
 
                 board.addTetromino(&curTetromino, curTetromino.getPosition());
-
-               
-                
-                //how to change code to make it accept random tetromino blocks
+                board.clearLines();
 
                 Tetromino* newTetromino;
 

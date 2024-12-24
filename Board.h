@@ -47,6 +47,25 @@ class Board{
             return false;
         }
 
+        void clearLines(){
+            for (int j = 0; j < BOARD_HEIGHT; j++){
+                bool full = true;
+                for (int i = 0; i < BOARD_WIDTH; i++){
+                    if (board[i][j] == -1){
+                        full = false;
+                        break;
+                    }
+                }
+                if (full){
+                    for (int k = j; k > 0; k--){
+                        for (int i = 0; i < BOARD_WIDTH; i++){
+                            board[i][k] = board[i][k - 1];
+                        }
+                    }
+                }
+            }
+        }
+
         void draw(){
             for (int i = 0; i < BOARD_WIDTH; i++){
                 for (int j = 0; j < BOARD_HEIGHT; j++){

@@ -39,7 +39,7 @@ int main() {
         }
         
         // move down the tetromino every 0.2 seconds but keeping updating the screen and input 
-        if (EventTriggered(0.1)){
+        if (EventTriggered(0.2)){
             game.nextFrame();
         }
         game.draw();
