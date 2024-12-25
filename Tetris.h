@@ -32,7 +32,7 @@ class Tetris{
 
     private:
         Board board;
-        int nextTetromino = false;
+        Tetromino* nextTetromino;
         int score = 0;
         int level = 0;
         int linesClearedSinceLevelUp = 0;

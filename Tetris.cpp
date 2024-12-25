@@ -1,6 +1,6 @@
 #include "Tetris.h"
 
-Tetris::Tetris(): board(Board()), curTetromino(getRandomTetromino()){
+Tetris::Tetris(): board(Board()), curTetromino(getRandomTetromino()), nextTetromino(getRandomTetromino()){
     std::srand(std::time(0));
 }
 
@@ -32,13 +32,20 @@ void Tetris::draw(){
     for(Position tile : curTetromino->getCurrentRotation()){
         DrawRectangle((curTetromino->getPosition()->x + tile.x) * TILE_SIZE, (curTetromino->getPosition()->y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(curTetromino->getId()));
     }
-    // side panel
+    // SIDE PANEL
+    // score
     DrawRectangle(TILE_SIZE * BOARD_WIDTH, 0, SIDE_PANEL_WIDTH, TILE_SIZE * BOARD_HEIGHT, GRAY);
     DrawText("Score: ", TILE_SIZE * BOARD_WIDTH + 10, 10, 20, BLACK);
+    // level
     DrawText(std::to_string(score).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 40, 20, BLACK);
     DrawText("Level: ", TILE_SIZE * BOARD_WIDTH + 10, 70, 20, BLACK);
     DrawText(std::to_string(level).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 100, 20, BLACK);
-    
+    // next tetromino
+    DrawText("Next", TILE_SIZE * BOARD_WIDTH + 10, 150, 20, BLACK);
+    for(Position tile : nextTetromino->getCurrentRotation()){
+        DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 180 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(nextTetromino->getId()));
+    }
+
 }
 
 bool Tetris::moveCurTetromino(int dx, int dy){
@@ -85,7 +92,8 @@ void Tetris::nextFrame(){
         int linesCleared = board.clearLines();
         updateScore(linesCleared);
 
-        Tetromino* newTetromino = getRandomTetromino();
+        Tetromino* newTetromino = nextTetromino;
+        nextTetromino = getRandomTetromino();
         // print new tetromino color
         std::cout<<newTetromino->getId()<<std::endl;
 
