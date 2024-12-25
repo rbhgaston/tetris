@@ -21,9 +21,11 @@ class Board{
         }
 
 
-        void addTetromino(Tetromino *tetromino, Position *pos){
+        void addTetromino(Tetromino *tetromino){
+            Position *pos = tetromino->getPosition();
             for (Position &tile : tetromino->getCurrentRotation()){
-                    board[pos->x + tile.x][(pos->y + tile.y)] = tetromino->id;
+                    board[pos->x + tile.x][(pos->y + tile.y)] = tetromino->getId();
+                    std::cout<<tetromino->getId();
             }
         }
         
