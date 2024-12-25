@@ -1,6 +1,6 @@
 #include "Tetris.h"
 
-Tetris::Tetris(): board(Board()), curTetromino(getRandomTetromino()), nextTetromino(getRandomTetromino()){
+Tetris::Tetris(): board(Board()), curTetromino(getRandomTetromino()), nextTetromino(getRandomTetromino()), holdTetromino(nullptr){
     std::srand(std::time(0));
 }
 
@@ -45,22 +45,32 @@ void Tetris::draw(){
     for(Position tile : nextTetromino->getCurrentRotation()){
         DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 180 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(nextTetromino->getId()));
     }
+    // hold tetromino
+    DrawText("Hold", TILE_SIZE * BOARD_WIDTH + 10, 300, 20, BLACK);
+    if(holdTetromino != nullptr){
+        for(Position tile : holdTetromino->getCurrentRotation()){
+            DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 330 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(holdTetromino->getId()));
+        }
+    }
+    
 
 }
 
 bool Tetris::moveCurTetromino(int dx, int dy){
     curTetromino->move(dx, dy);
-    if(!board.isInside(curTetromino) || board.isColliding(curTetromino))
+    if(!board.isInside(curTetromino) || board.isColliding(curTetromino)){
         curTetromino->move(-dx, -dy);
         return false;
+    } 
     return true;
 }
 
 bool Tetris::rotateCurTetromino(){
     curTetromino->rotate();
-    if(!board.isInside(curTetromino) || board.isColliding(curTetromino))
+    if(!board.isInside(curTetromino) || board.isColliding(curTetromino)){
         curTetromino->unrotate();
         return false;
+    }
     return true;
 }
 
@@ -76,6 +86,9 @@ void Tetris::handleInput(){
     }
     if (IsKeyPressed(KEY_UP)){
         rotateCurTetromino();
+    }
+    if(IsKeyPressed(KEY_SPACE)){
+        while(moveCurTetromino(0, 1));
     }
 }
 

@@ -33,6 +33,7 @@ class Tetris{
     private:
         Board board;
         Tetromino* nextTetromino;
+        Tetromino* holdTetromino;
         int score = 0;
         int level = 0;
         int linesClearedSinceLevelUp = 0;
