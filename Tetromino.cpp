@@ -21,6 +21,13 @@ Position* Tetromino::getPosition(){
     return new Position{offsetx, offsety};
 }
 
+Tetromino* Tetromino::reset(){
+    offsetx = initialOffsetx;
+    offsety = initialOffsety;
+    currentRotation = 0;
+    return this;
+}
+
 std::vector<Position> Tetromino::getCurrentRotation(){
     return rotations[currentRotation];
 }

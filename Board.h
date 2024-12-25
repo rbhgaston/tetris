@@ -12,7 +12,7 @@ class Board{
     public:
         Board();
 
-        void addTetromino(Tetromino *tetromino);
+        void lockTetromino(Tetromino *tetromino);
         
         bool isInside(Tetromino *tetromino);
 

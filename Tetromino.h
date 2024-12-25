@@ -23,6 +23,7 @@ class Tetromino{
         const int getInitialOffsety() const {return initialOffsety;}
 
         Tetromino* setPosition(int x, int y); 
+        Tetromino* reset();
 
         Tetromino& operator=(const Tetromino &tetromino);
 

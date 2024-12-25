@@ -91,17 +91,17 @@ void Tetris::handleInput(){
         while(moveCurTetromino(0, 1));
     }
     if(IsKeyPressed(KEY_C)){
+        if (holdUsed) return;
         if(holdTetromino == nullptr){
-            holdTetromino = curTetromino;
+            holdTetromino = curTetromino->reset();
             curTetromino = nextTetromino;
-            curTetromino->setPosition(curTetromino->getInitialOffsetx(), curTetromino->getInitialOffsety());
             nextTetromino = getRandomTetromino();
         }else{
             Tetromino* temp = holdTetromino;
-            holdTetromino = curTetromino;
+            holdTetromino = curTetromino->reset();
             curTetromino = temp;
-            curTetromino->setPosition(curTetromino->getInitialOffsetx(), curTetromino->getInitialOffsety());
         }
+        holdUsed = true;
     }
 }
 
@@ -114,7 +114,8 @@ void Tetris::nextFrame(){
     if (isColliding){
         curTetromino->move(0, -1);
 
-        board.addTetromino(curTetromino);
+        board.lockTetromino(curTetromino);
+        holdUsed = false;
         int linesCleared = board.clearLines();
         updateScore(linesCleared);
 

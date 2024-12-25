@@ -32,13 +32,14 @@ class Tetris{
 
     private:
         Board board;
+        Tetromino* curTetromino;
         Tetromino* nextTetromino;
         Tetromino* holdTetromino;
+        bool holdUsed = false;
+
         int score = 0;
         int level = 0;
         int linesClearedSinceLevelUp = 0;
-        Tetromino* curTetromino;
-
 };
 
 
