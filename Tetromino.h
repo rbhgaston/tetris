@@ -9,7 +9,7 @@ enum TetrominoType{
 
 class Tetromino{
     public:
-        Tetromino(TetrominoType id);
+        Tetromino(TetrominoType id, int initialOffsetx, int initialOffsety);
         Tetromino(const Tetromino &tetromino);
 
         void rotate();
@@ -19,6 +19,8 @@ class Tetromino{
         Position* getPosition();
         std::vector<Position> getCurrentRotation();
         const TetrominoType getId() const;
+        const int getInitialOffsetx() const {return initialOffsetx;}
+        const int getInitialOffsety() const {return initialOffsety;}
 
         Tetromino* setPosition(int x, int y); 
 
@@ -28,13 +30,13 @@ class Tetromino{
         std::vector<Position> rotations [4];
         const TetrominoType id;
         int currentRotation = 0;
-        int offsetx = 0 , offsety = 0;
-
+        int offsetx, offsety;
+        int initialOffsetx, initialOffsety;
 };
 
 class ITetromino: public Tetromino{
     public:
-        ITetromino() : Tetromino(I) {
+        ITetromino() : Tetromino(I, 3, 0) {
             rotations[0] = {{0, 0}, {1, 0}, {2, 0}, {3, 0}};
             rotations[1] = {{2, 0}, {2, 1}, {2, 2}, {2, 3}};
             rotations[2] = {{0, 2}, {1, 2}, {2, 2}, {3, 2}};
@@ -44,7 +46,7 @@ class ITetromino: public Tetromino{
 
 class JTetromino: public Tetromino{
     public:
-        JTetromino() : Tetromino(J) {
+        JTetromino() : Tetromino(J, 3, 0) {
             rotations[0] = {{0, 0}, {0, 1}, {1, 1}, {2, 1}};
             rotations[1] = {{1, 0}, {2, 0}, {1, 1}, {1, 2}};
             rotations[2] = {{0, 1}, {1, 1}, {2, 1}, {2, 2}};;
@@ -54,7 +56,7 @@ class JTetromino: public Tetromino{
 
 class LTetromino: public Tetromino{
     public:
-        LTetromino() : Tetromino(L) {
+        LTetromino() : Tetromino(L, 3, 0) {
             rotations[0] = {{2, 0}, {0, 1}, {1, 1}, {2, 1}};
             rotations[1] = {{1, 0}, {1, 1}, {1, 2}, {2, 2}};
             rotations[2] = {{0, 1}, {1, 1}, {2, 1}, {0, 2}};
@@ -64,7 +66,7 @@ class LTetromino: public Tetromino{
 
 class OTetromino: public Tetromino{
     public:
-        OTetromino() : Tetromino(O) {
+        OTetromino() : Tetromino(O, 3, 0) {
             rotations[0] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
             rotations[1] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
             rotations[2] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
@@ -74,7 +76,7 @@ class OTetromino: public Tetromino{
 
 class STetromino: public Tetromino{
     public:
-        STetromino() : Tetromino(S) {
+        STetromino() : Tetromino(S, 3, 0) {
             rotations[0] = {{1, 0}, {2, 0}, {0, 1}, {1, 1}};
             rotations[1] = {{0, 0}, {0, 1}, {1, 1}, {1, 2}};
             rotations[2] = {{1, 1}, {2, 1}, {0, 2}, {1, 2}};
@@ -84,7 +86,7 @@ class STetromino: public Tetromino{
 
 class TTetromino: public Tetromino{
     public:
-        TTetromino() : Tetromino(T) {
+        TTetromino() : Tetromino(T, 3, 0) {
             rotations[0] = {{1, 0}, {0, 1}, {1, 1}, {2, 1}};
             rotations[1] = {{1, 0}, {0, 1}, {1, 1}, {1, 2}};
             rotations[2] = {{0, 1}, {1, 1}, {2, 1}, {1, 2}};
@@ -94,7 +96,7 @@ class TTetromino: public Tetromino{
 
 class ZTetromino: public Tetromino{
     public:
-        ZTetromino() : Tetromino(Z) {
+        ZTetromino() : Tetromino(Z, 3, 0) {
             rotations[0] = {{0, 0}, {1, 0}, {1, 1}, {2, 1}};
             rotations[1] = {{2, 0}, {1, 1}, {2, 1}, {1, 2}};
             rotations[2] = {{0, 1}, {1, 1}, {1, 2}, {2, 2}};

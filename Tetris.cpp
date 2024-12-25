@@ -90,6 +90,19 @@ void Tetris::handleInput(){
     if(IsKeyPressed(KEY_SPACE)){
         while(moveCurTetromino(0, 1));
     }
+    if(IsKeyPressed(KEY_C)){
+        if(holdTetromino == nullptr){
+            holdTetromino = curTetromino;
+            curTetromino = nextTetromino;
+            curTetromino->setPosition(curTetromino->getInitialOffsetx(), curTetromino->getInitialOffsety());
+            nextTetromino = getRandomTetromino();
+        }else{
+            Tetromino* temp = holdTetromino;
+            holdTetromino = curTetromino;
+            curTetromino = temp;
+            curTetromino->setPosition(curTetromino->getInitialOffsetx(), curTetromino->getInitialOffsety());
+        }
+    }
 }
 
 // computes next state of the game
@@ -107,13 +120,6 @@ void Tetris::nextFrame(){
 
         Tetromino* newTetromino = nextTetromino;
         nextTetromino = getRandomTetromino();
-        // print new tetromino color
-        std::cout<<newTetromino->getId()<<std::endl;
-
-        int x;
-        do{
-            x = rand() % BOARD_WIDTH;
-        }while(!board.isInside(newTetromino->setPosition(x,0)));
 
         if(board.isColliding(newTetromino)){
             std::cout<<"Game Over"<<std::endl;

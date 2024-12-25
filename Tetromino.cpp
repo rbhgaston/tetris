@@ -1,6 +1,8 @@
 #include "Tetromino.h"
 
-Tetromino::Tetromino(TetrominoType id): id(id) {
+Tetromino::Tetromino(TetrominoType id, int initialOffsetx, int initialOffsety): id(id), initialOffsetx(initialOffsetx), initialOffsety(initialOffsety){
+    offsetx = initialOffsetx;
+    offsety = initialOffsety;
 }
 
 void Tetromino::rotate(){
