@@ -3,9 +3,11 @@
 Tetris::Tetris(): board(Board()), curTetromino(getRandomTetromino()){
     std::srand(std::time(0));
 }
+
 Tetromino* Tetris::getCurTetromino(){
     return curTetromino;
 }
+
 void Tetris::setCurTetromino(Tetromino *tetromino){
     curTetromino = tetromino;
 }
@@ -30,6 +32,13 @@ void Tetris::draw(){
     for(Position tile : curTetromino->getCurrentRotation()){
         DrawRectangle((curTetromino->getPosition()->x + tile.x) * TILE_SIZE, (curTetromino->getPosition()->y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(curTetromino->getId()));
     }
+    // side panel
+    DrawRectangle(TILE_SIZE * BOARD_WIDTH, 0, SIDE_PANEL_WIDTH, TILE_SIZE * BOARD_HEIGHT, GRAY);
+    DrawText("Score: ", TILE_SIZE * BOARD_WIDTH + 10, 10, 20, BLACK);
+    DrawText(std::to_string(score).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 40, 20, BLACK);
+    DrawText("Level: ", TILE_SIZE * BOARD_WIDTH + 10, 70, 20, BLACK);
+    DrawText(std::to_string(level).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 100, 20, BLACK);
+    
 }
 
 bool Tetris::moveCurTetromino(int dx, int dy){
@@ -73,7 +82,8 @@ void Tetris::nextFrame(){
         curTetromino->move(0, -1);
 
         board.addTetromino(curTetromino);
-        board.clearLines();
+        int linesCleared = board.clearLines();
+        updateScore(linesCleared);
 
         Tetromino* newTetromino = getRandomTetromino();
         // print new tetromino color
@@ -90,6 +100,27 @@ void Tetris::nextFrame(){
         }
         curTetromino = newTetromino;
     }                
+}
+
+void Tetris::updateScore(int lines){
+    int factor;
+    switch(lines){
+        case 0: factor = 0; break;
+        case 1: factor = 40; break;
+        case 2: factor = 100; break;
+        case 3: factor = 300; break;
+        case 4: factor = 1200; break;
+        default: factor = 1200;
+    }
+
+    score += factor * (level + 1);
+    
+    // level up
+    linesClearedSinceLevelUp += lines;
+    if(linesClearedSinceLevelUp >= 10){
+        level += linesClearedSinceLevelUp / 10;
+        linesClearedSinceLevelUp = linesClearedSinceLevelUp % 10;
+    }
 }
 
 

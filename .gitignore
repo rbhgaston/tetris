@@ -32,8 +32,10 @@
 *.app
 
 .vscode/
+.DS_Store
 playground.cpp
 notes.txt
 main
 ITetromino.cpp
 ITetromino.h
+main.dSYM

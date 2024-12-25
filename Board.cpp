@@ -40,7 +40,8 @@ bool Board::isColliding(Tetromino *tetromino){
     return false;
 }
 
-void Board::clearLines(){
+int Board::clearLines(){
+    int linesCleared = 0;
     for (int j = 0; j < BOARD_HEIGHT; j++){
         bool full = true;
         for (int i = 0; i < BOARD_WIDTH; i++){
@@ -49,6 +50,7 @@ void Board::clearLines(){
                 break;
             }
         }
+        linesCleared += full;
         if (full){
             for (int k = j; k > 0; k--){
                 for (int i = 0; i < BOARD_WIDTH; i++){
@@ -57,6 +59,7 @@ void Board::clearLines(){
             }
         }
     }
+    return linesCleared;
 }
 
 void Board::draw(){

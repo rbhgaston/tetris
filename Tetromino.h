@@ -10,17 +10,19 @@ enum TetrominoType{
 class Tetromino{
     public:
         Tetromino(TetrominoType id);
+        Tetromino(const Tetromino &tetromino);
+
         void rotate();
         void unrotate();
         void move(int dx, int dy);
+
         Position* getPosition();
-        Tetromino* setPosition(int x, int y); 
         std::vector<Position> getCurrentRotation();
-
-        Tetromino(const Tetromino &tetromino);
-        Tetromino& operator=(const Tetromino &tetromino);
-
         const TetrominoType getId() const;
+
+        Tetromino* setPosition(int x, int y); 
+
+        Tetromino& operator=(const Tetromino &tetromino);
 
     protected:
         std::vector<Position> rotations [4];

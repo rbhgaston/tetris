@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Board.h"
 
+const int SIDE_PANEL_WIDTH = 150;
 
 class Tetris{
     public:
@@ -25,11 +26,16 @@ class Tetris{
 
         // computes next state of the game
         // how to change code to make it accept random tetromino blocks
+        void nextFrame();  
 
-        void nextFrame();               
+        void updateScore(int score); 
+
     private:
         Board board;
         int nextTetromino = false;
+        int score = 0;
+        int level = 0;
+        int linesClearedSinceLevelUp = 0;
         Tetromino* curTetromino;
 
 };

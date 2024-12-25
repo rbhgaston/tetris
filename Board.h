@@ -18,7 +18,7 @@ class Board{
 
         bool isColliding(Tetromino *tetromino);
 
-        void clearLines();
+        int clearLines();
 
         void draw();
 
@@ -27,6 +27,4 @@ class Board{
 
     private:
         int board[BOARD_WIDTH][BOARD_HEIGHT];
-
-
 };
