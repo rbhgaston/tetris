@@ -1,6 +1,5 @@
 #include <iostream>
 #include "raylib.h"
-#include "Tetromino.h"
 #include "Position.h"
 #include "Tetris.h"
 
@@ -19,13 +18,11 @@ bool EventTriggered(double interval)
 }
 
 
-
 int main() {
     SetTraceLogLevel(LOG_ERROR); 
     InitWindow(TILE_SIZE * BOARD_WIDTH, TILE_SIZE * BOARD_HEIGHT, "Raylib Test");
     SetTargetFPS(60);
 
-        
     Tetris game = Tetris();
 
     while (!WindowShouldClose()) {
@@ -43,7 +40,6 @@ int main() {
             game.nextFrame();
         }
         game.draw();
-
 
         EndDrawing();
     }

@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -std=c++17 -I/opt/homebrew/include
 LDFLAGS = -L/opt/homebrew/lib -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
-SRC = main.cpp Tetromino.cpp 
+SRC = main.cpp Tetromino.cpp Tetris.cpp Board.cpp
 OUT = main
 
 all:

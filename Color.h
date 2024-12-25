@@ -4,7 +4,7 @@
 #include "Tetromino.h"
 
 
-Color getColor(TetrominoType type){
+inline Color getColor(TetrominoType type){
     switch (type){
         case I:
             return SKYBLUE;

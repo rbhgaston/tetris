@@ -7,7 +7,6 @@ enum TetrominoType{
     I, J, L, O, S, T, Z
 };
 
-
 class Tetromino{
     public:
         Tetromino(TetrominoType id);
