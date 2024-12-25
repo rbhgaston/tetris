@@ -76,16 +76,20 @@ bool Tetris::rotateCurTetromino(){
 
 void Tetris::handleInput(){
     if (IsKeyPressed(KEY_LEFT)){
-        moveCurTetromino(-1, 0);
+        if(moveCurTetromino(-1, 0))
+        playerAction = true;
     }
     if (IsKeyPressed(KEY_RIGHT)){
-        moveCurTetromino(1, 0);
+       if( moveCurTetromino(1, 0))
+        playerAction = true;
     }
     if (IsKeyPressed(KEY_DOWN)){
-        moveCurTetromino(0, 1);
+        if(moveCurTetromino(0, 1))
+        playerAction = true;
     }
     if (IsKeyPressed(KEY_UP)){
-        rotateCurTetromino();
+        if(rotateCurTetromino())
+        playerAction = true;
     }
     if(IsKeyPressed(KEY_SPACE)){
         while(moveCurTetromino(0, 1));
@@ -111,8 +115,14 @@ void Tetris::handleInput(){
 void Tetris::nextFrame(){
     curTetromino->move(0, 1);
     bool isColliding = board.isColliding(curTetromino);
+
     if (isColliding){
         curTetromino->move(0, -1);
+
+        if(collisionTime == 0)
+            collisionTime = GetTime();
+
+        if(playerAction && GetTime() - collisionTime < lockDelay)return;
 
         board.lockTetromino(curTetromino);
         holdUsed = false;
@@ -127,7 +137,13 @@ void Tetris::nextFrame(){
             exit(0);
         }
         curTetromino = newTetromino;
-    }                
+
+        collisionTime = 0;
+        playerAction = false;
+        
+    }else{
+        playerAction = false;
+    }           
 }
 
 void Tetris::updateScore(int lines){

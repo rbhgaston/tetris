@@ -36,10 +36,14 @@ class Tetris{
         Tetromino* nextTetromino;
         Tetromino* holdTetromino;
         bool holdUsed = false;
+        double lockDelay = 0.5;
+        double collisionTime = 0;
+        int playerAction = false;
 
         int score = 0;
         int level = 0;
         int linesClearedSinceLevelUp = 0;
+        
 };
 
 
