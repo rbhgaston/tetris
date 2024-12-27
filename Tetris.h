@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "Board.h"
+#include<vector>
 
 const int SIDE_PANEL_WIDTH = 150;
 
@@ -30,20 +31,28 @@ class Tetris{
 
         void updateScore(int score); 
 
+        const double getSpeed() const;
+
+        void updateSpeed();
+        
+        void resetBag();
+
     private:
         Board board;
         Tetromino* curTetromino;
         Tetromino* nextTetromino;
         Tetromino* holdTetromino;
         bool holdUsed = false;
-        double lockDelay = 0.5;
+        double lockDelay = 0.5f;
         double collisionTime = 0;
         int playerAction = false;
 
         int score = 0;
         int level = 0;
-        int linesClearedSinceLevelUp = 0;
-        
+        int lines = 0;
+        double speed = 1.0f;
+
+        std::vector<int> bag;
 };
 
 

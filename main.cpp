@@ -26,7 +26,7 @@ int main() {
     SetTargetFPS(60);
 
     Tetris game = Tetris();
-
+    
     while (!WindowShouldClose()) {
         game.handleInput();
         BeginDrawing();
@@ -37,8 +37,8 @@ int main() {
                 DrawRectangle(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE- 1, TILE_SIZE - 1, BLACK);
         }
         
-        // move down the tetromino every 0.2 seconds but keeping updating the screen and input 
-        if (EventTriggered(0.2)){
+        // move down the tetromino every 'speed' seconds but keeping updating the screen and input 
+        if (EventTriggered(game.getSpeed())){
             game.nextFrame();
         }
         

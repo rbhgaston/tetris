@@ -16,7 +16,6 @@ void Board::lockTetromino(Tetromino *tetromino){
     Position *pos = tetromino->getPosition();
     for (Position &tile : tetromino->getCurrentRotation()){
             board[pos->x + tile.x][(pos->y + tile.y)] = tetromino->getId();
-            std::cout<<tetromino->getId();
     }
 }
 
