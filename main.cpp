@@ -41,6 +41,7 @@ int main() {
         if (EventTriggered(0.2)){
             game.nextFrame();
         }
+        
         game.draw();
 
         EndDrawing();

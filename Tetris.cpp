@@ -33,25 +33,40 @@ void Tetris::draw(){
         DrawRectangle((curTetromino->getPosition()->x + tile.x) * TILE_SIZE, (curTetromino->getPosition()->y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(curTetromino->getId()));
     }
     // SIDE PANEL
-    // score
     DrawRectangle(TILE_SIZE * BOARD_WIDTH, 0, SIDE_PANEL_WIDTH, TILE_SIZE * BOARD_HEIGHT, GRAY);
-    DrawText("Score: ", TILE_SIZE * BOARD_WIDTH + 10, 10, 20, BLACK);
+    // score
+    DrawText("Score", TILE_SIZE * BOARD_WIDTH + 10, 10, 20, BLACK);
+    DrawText(std::to_string(score).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 35, 20, BLACK);
     // level
-    DrawText(std::to_string(score).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 40, 20, BLACK);
-    DrawText("Level: ", TILE_SIZE * BOARD_WIDTH + 10, 70, 20, BLACK);
-    DrawText(std::to_string(level).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 100, 20, BLACK);
+    DrawText("Level", TILE_SIZE * BOARD_WIDTH + 10, 60, 20, BLACK);
+    DrawText(std::to_string(level).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 80, 20, BLACK);
+    // lines cleared
+    DrawText("Lines", TILE_SIZE * BOARD_WIDTH + 10, 110, 20, BLACK);
+    DrawText(std::to_string(linesClearedSinceLevelUp).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 130, 20, BLACK);
     // next tetromino
-    DrawText("Next", TILE_SIZE * BOARD_WIDTH + 10, 150, 20, BLACK);
+    DrawText("Next", TILE_SIZE * BOARD_WIDTH + 10, 160, 20, BLACK);
     for(Position tile : nextTetromino->getCurrentRotation()){
         DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 180 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(nextTetromino->getId()));
     }
     // hold tetromino
-    DrawText("Hold", TILE_SIZE * BOARD_WIDTH + 10, 300, 20, BLACK);
+    DrawText("Hold", TILE_SIZE * BOARD_WIDTH + 10, 230, 20, BLACK);
     if(holdTetromino != nullptr){
         for(Position tile : holdTetromino->getCurrentRotation()){
-            DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 330 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(holdTetromino->getId()));
+            DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 250 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(holdTetromino->getId()));
         }
     }
+    // // next tetromino
+    // DrawText("Next", TILE_SIZE * BOARD_WIDTH + 10, 150, 20, BLACK);
+    // for(Position tile : nextTetromino->getCurrentRotation()){
+    //     DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 180 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(nextTetromino->getId()));
+    // }
+    // // hold tetromino
+    // DrawText("Hold", TILE_SIZE * BOARD_WIDTH + 10, 300, 20, BLACK);
+    // if(holdTetromino != nullptr){
+    //     for(Position tile : holdTetromino->getCurrentRotation()){
+    //         DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 330 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(holdTetromino->getId()));
+    //     }
+    // }
     
 
 }
