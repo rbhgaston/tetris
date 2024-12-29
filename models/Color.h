@@ -1,11 +1,11 @@
 #pragma once
 
 #include <raylib.h>
-#include "Tetromino.h"
 
+#include "TetrominoModel.h"
 
-inline Color getColor(TetrominoType type){
-    switch (type){
+inline Color getColor(TetrominoType type) {
+    switch (type) {
         case I:
             return SKYBLUE;
         case J:
@@ -23,4 +23,3 @@ inline Color getColor(TetrominoType type){
     }
     return BLACK;
 }
-

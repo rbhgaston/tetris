@@ -36,6 +36,9 @@
 playground.cpp
 notes.txt
 main
-ITetromino.cpp
-ITetromino.h
-main.dSYM
+.editorconfig
+
+main.dSYM/
+main.dSYM/Contents/Info.plist
+main.dSYM/Contents/Resources/Relocations/aarch64/main.yml
+
