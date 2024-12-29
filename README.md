@@ -23,20 +23,28 @@ This project follows MVC (Model-View-Controller).
    cd tetris
    ```
 
-2. **Install Raylib and Make:**
+2. **Install Raylib:**
    Follow the instructions on the [Raylib installation page](https://github.com/raysan5/raylib#installation) to install Raylib on your system.
-   Then install Make.
 
-3. **Update the Makefile:**
+3. **Option 1: Update the Makefile and Build the project:**
    Ensure that the path to Raylib is correctly set in the `Makefile`.
 
-4. **Build the project:**
+   **Option 2: Run it direclty in the Terminal:**
+   Or if do not have make, you can simply execute this command in your terminal
+   Macos
 
    ```sh
-   make
+   g++ main.cpp ./models/TetrominoModel.cpp ./models/BoardModel.cpp ./controllers/TetrisController.cpp ./views/BoardView.cpp ./views/TetrominoView.cpp ./views/SidePanelView.cpp -o main -I/opt/homebrew/include -I/opt/homebrew/include -L/opt/homebrew/lib -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo -std=c++17
    ```
 
-5. **Run the game:**
+   Windows
+
+   ```sh
+    g++ main.cpp ./models/TetrominoModel.cpp ./models/BoardModel.cpp ./controllers/TetrisController.cpp ./views/BoardView.cpp ./views/TetrominoView.cpp ./views/SidePanelView.cpp -o main -IC:\raylib\include -LC:\raylib\lib -lraylib -lopengl32 -lgdi32 -lwinmm -std=c++17
+
+   ```
+
+4. **Run the game:**
    ```sh
    ./main
    ```
