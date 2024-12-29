@@ -26,11 +26,11 @@ This project follows MVC (Model-View-Controller).
 2. **Install Raylib:**
    Follow the instructions on the [Raylib installation page](https://github.com/raysan5/raylib#installation) to install Raylib on your system.
 
-3. **Option 1: Update the Makefile and Build the project:**
-   Ensure that the path to Raylib is correctly set in the `Makefile`.
+3. **Option 1: Update the Makefile and Build the project:**  
+   Ensure that the path to Raylib is correctly set in the `Makefile`. The existing one works for macos.
 
-   **Option 2: Run it direclty in the Terminal:**
-   Or if do not have make, you can simply execute this command in your terminal
+   **Option 2: Run it direclty in the Terminal:**  
+   If do not have make, you can simply execute this command in your terminal  
    Macos
 
    ```sh
@@ -50,5 +50,3 @@ This project follows MVC (Model-View-Controller).
    ```
 
 ### Enjoy the Game
-
-You can now enjoy playing Tetris!
