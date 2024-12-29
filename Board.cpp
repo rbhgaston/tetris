@@ -71,6 +71,10 @@ void Board::draw(){
     }
 }
 
+int Board::getCell(int x, int y){
+    return board[x][y];
+}
+
 // for debugging
 void Board::display(){
     for (int j = 0; j < BOARD_HEIGHT; j++){

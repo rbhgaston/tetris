@@ -1,19 +1,22 @@
 #pragma once
-#include "raylib.h"
-#include "Tetromino.h"
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
-#include "Board.h"
-#include<vector>
+#include <vector>
 
-const int SIDE_PANEL_WIDTH = 150;
+#include "Tetromino.h"
+#include "constants.h"
+#include "BoardView.h"
+#include "TetrominoView.h"
+#include "SidePanelView.h"
 
-class Tetris{
+class TetrisController{
     public:
-        Tetris();
+        TetrisController();
         Tetromino* getCurTetromino(); 
         void setCurTetromino(Tetromino *tetromino);
+        void setNextTetromino(Tetromino *tetromino);
+        void setHoldTetromino(Tetromino *tetromino);
 
         Tetromino* getRandomTetromino();
 
@@ -39,9 +42,12 @@ class Tetris{
 
     private:
         Board board;
+        BoardView* boardView;
         Tetromino* curTetromino;
+        TetrominoView *curTetrominoView;
         Tetromino* nextTetromino;
         Tetromino* holdTetromino;
+        SidePanelView* sidePanelView;
         bool holdUsed = false;
         double lockDelay = 0.5f;
         double collisionTime = 0;

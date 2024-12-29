@@ -1,22 +1,35 @@
-#include "Tetris.h"
+#include "TetrisController.h"
 
-Tetris::Tetris(): board(Board()){
+TetrisController::TetrisController(): board(Board()) {
     std::srand(std::time(0));
     resetBag();
     curTetromino = getRandomTetromino();
     nextTetromino = getRandomTetromino();
     holdTetromino = nullptr;
+
+    boardView = new BoardView(&board);
+    curTetrominoView = new TetrominoView(curTetromino);
+    sidePanelView = new SidePanelView();
 }
 
-Tetromino* Tetris::getCurTetromino(){
+Tetromino* TetrisController::getCurTetromino(){
     return curTetromino;
 }
 
-void Tetris::setCurTetromino(Tetromino *tetromino){
+void TetrisController::setCurTetromino(Tetromino *tetromino){
     curTetromino = tetromino;
+    curTetrominoView->setTetromino(tetromino);
 }
 
-Tetromino* Tetris::getRandomTetromino(){
+void TetrisController::setHoldTetromino(Tetromino *tetromino){
+    holdTetromino = tetromino;
+}
+
+void TetrisController::setNextTetromino(Tetromino *tetromino){
+    nextTetromino = tetromino;
+}
+
+Tetromino* TetrisController::getRandomTetromino(){
     int randomId = rand() % bag.size();
     int randomTetrominoType = bag[randomId];
     bag.erase(bag.begin() + randomId);
@@ -38,51 +51,14 @@ Tetromino* Tetris::getRandomTetromino(){
     return newTetromino;
 }
 
-void Tetris::draw(){
-    board.draw();
-    for(Position tile : curTetromino->getCurrentRotation()){
-        DrawRectangle((curTetromino->getPosition()->x + tile.x) * TILE_SIZE, (curTetromino->getPosition()->y + tile.y) * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(curTetromino->getId()));
-    }
+void TetrisController::draw(){
+    boardView->draw(); 
+    curTetrominoView->draw(curTetromino->getPosition()->x * TILE_SIZE, curTetromino->getPosition()->y * TILE_SIZE);
     // SIDE PANEL
-    DrawRectangle(TILE_SIZE * BOARD_WIDTH, 0, SIDE_PANEL_WIDTH, TILE_SIZE * BOARD_HEIGHT, GRAY);
-    // score
-    DrawText("Score", TILE_SIZE * BOARD_WIDTH + 10, 10, 20, BLACK);
-    DrawText(std::to_string(score).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 35, 20, BLACK);
-    // level
-    DrawText("Level", TILE_SIZE * BOARD_WIDTH + 10, 60, 20, BLACK);
-    DrawText(std::to_string(level).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 80, 20, BLACK);
-    // lines cleared
-    DrawText("Lines", TILE_SIZE * BOARD_WIDTH + 10, 110, 20, BLACK);
-    DrawText(std::to_string(lines).c_str(), TILE_SIZE * BOARD_WIDTH + 10, 130, 20, BLACK);
-    // next tetromino
-    DrawText("Next", TILE_SIZE * BOARD_WIDTH + 10, 160, 20, BLACK);
-    for(Position tile : nextTetromino->getCurrentRotation()){
-        DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 180 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(nextTetromino->getId()));
-    }
-    // hold tetromino
-    DrawText("Hold", TILE_SIZE * BOARD_WIDTH + 10, 240, 20, BLACK);
-    if(holdTetromino != nullptr){
-        for(Position tile : holdTetromino->getCurrentRotation()){
-            DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 260 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(holdTetromino->getId()));
-        }
-    }
-    // // next tetromino
-    // DrawText("Next", TILE_SIZE * BOARD_WIDTH + 10, 150, 20, BLACK);
-    // for(Position tile : nextTetromino->getCurrentRotation()){
-    //     DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 180 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(nextTetromino->getId()));
-    // }
-    // // hold tetromino
-    // DrawText("Hold", TILE_SIZE * BOARD_WIDTH + 10, 300, 20, BLACK);
-    // if(holdTetromino != nullptr){
-    //     for(Position tile : holdTetromino->getCurrentRotation()){
-    //         DrawRectangle(TILE_SIZE * BOARD_WIDTH + 10 + tile.x * TILE_SIZE, 330 + tile.y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1, getColor(holdTetromino->getId()));
-    //     }
-    // }
-    
-
+    sidePanelView->draw(score, level, lines, holdTetromino, nextTetromino);
 }
 
-bool Tetris::moveCurTetromino(int dx, int dy){
+bool TetrisController::moveCurTetromino(int dx, int dy){
     curTetromino->move(dx, dy);
     if(!board.isInside(curTetromino) || board.isColliding(curTetromino)){
         curTetromino->move(-dx, -dy);
@@ -91,7 +67,7 @@ bool Tetris::moveCurTetromino(int dx, int dy){
     return true;
 }
 
-bool Tetris::rotateCurTetromino(){
+bool TetrisController::rotateCurTetromino(){
     curTetromino->rotate();
     if(!board.isInside(curTetromino) || board.isColliding(curTetromino)){
         curTetromino->unrotate();
@@ -100,7 +76,7 @@ bool Tetris::rotateCurTetromino(){
     return true;
 }
 
-void Tetris::handleInput(){
+void TetrisController::handleInput(){
     if (IsKeyPressed(KEY_LEFT)){
         if(moveCurTetromino(-1, 0))
         playerAction = true;
@@ -119,17 +95,17 @@ void Tetris::handleInput(){
     }
     if(IsKeyPressed(KEY_SPACE)){
         while(moveCurTetromino(0, 1));
-    }
+    }//TODO change curTetromino to nextTetromino
     if(IsKeyPressed(KEY_C)){
         if (holdUsed) return;
         if(holdTetromino == nullptr){
-            holdTetromino = curTetromino->reset();
-            curTetromino = nextTetromino;
-            nextTetromino = getRandomTetromino();
+            setHoldTetromino(curTetromino->reset());
+            setCurTetromino(nextTetromino);
+            setNextTetromino(getRandomTetromino());
         }else{
             Tetromino* temp = holdTetromino;
-            holdTetromino = curTetromino->reset();
-            curTetromino = temp;
+            setHoldTetromino(curTetromino->reset());
+            setCurTetromino(temp);
         }
         holdUsed = true;
     }
@@ -138,7 +114,7 @@ void Tetris::handleInput(){
 // computes next state of the game
 // how to change code to make it accept random tetromino blocks
 
-void Tetris::nextFrame(){
+void TetrisController::nextFrame(){
     curTetromino->move(0, 1);
     bool isColliding = board.isColliding(curTetromino);
 
@@ -156,13 +132,13 @@ void Tetris::nextFrame(){
         updateSpeed();
 
         Tetromino* newTetromino = nextTetromino;
-        nextTetromino = getRandomTetromino();
+        setNextTetromino(getRandomTetromino());
 
         if(board.isColliding(newTetromino)){
             std::cout<<"Game Over"<<std::endl;
             exit(0);
         }
-        curTetromino = newTetromino;
+        setCurTetromino(newTetromino);
 
         collisionTime = 0;
         playerAction = false;
@@ -172,7 +148,7 @@ void Tetris::nextFrame(){
     }           
 }
 
-void Tetris::updateScore(int lines){
+void TetrisController::updateScore(int lines){
     int factor;
     switch(lines){
         case 0: factor = 0; break;
@@ -190,15 +166,15 @@ void Tetris::updateScore(int lines){
     level = this->lines / 10;
 }
 
-const double Tetris::getSpeed() const{
+const double TetrisController::getSpeed() const{
     return speed;
 }
 
-void Tetris::updateSpeed(){
+void TetrisController::updateSpeed(){
     speed = std::max(0.05f, 1.0f - (0.1f * level));
 }
 
-void Tetris::resetBag(){
+void TetrisController::resetBag(){
     bag = {0, 1, 2, 3, 4, 5, 6};
 }
 

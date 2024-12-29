@@ -1,7 +1,7 @@
 #include <iostream>
 #include "raylib.h"
 #include "Position.h"
-#include "Tetris.h"
+#include "TetrisController.h"
 
 
 double lastUpdateTime = 0;
@@ -19,16 +19,17 @@ bool EventTriggered(double interval)
 
 
 int main() {
+
     SetTraceLogLevel(LOG_ERROR); 
     InitWindow(TILE_SIZE * BOARD_WIDTH + SIDE_PANEL_WIDTH, TILE_SIZE * BOARD_HEIGHT, "Raylib Test");
     // DrawRectangle(TILE_SIZE * BOARD_WIDTH + SIDE_PANEL_WIDTH/2, TILE_SIZE*BOARD_HEIGHT, 20, TILE_SIZE, RED);
     
     SetTargetFPS(60);
 
-    Tetris game = Tetris();
+    TetrisController controller = TetrisController();
     
     while (!WindowShouldClose()) {
-        game.handleInput();
+        controller.handleInput();
         BeginDrawing();
         // SETTING UP THE BOARD
         // ClearBackground(WHITE);
@@ -38,15 +39,15 @@ int main() {
         }
         
         // move down the tetromino every 'speed' seconds but keeping updating the screen and input 
-        if (EventTriggered(game.getSpeed())){
-            game.nextFrame();
+        if (EventTriggered(controller.getSpeed())){
+            controller.nextFrame();
         }
         
-        game.draw();
+        controller.draw();
 
         EndDrawing();
     }
-
+    
     CloseWindow();
     return 0;
 }
