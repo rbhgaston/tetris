@@ -24,6 +24,10 @@ class TetrominoModel {
     const TetrominoType getId() const;
     const int getInitialOffsetx() const;
     const int getInitialOffsety() const;
+    const int getOffsetx() const;
+    const int getOffsety() const;
+    const int getCurrentRotationIndex() const;
+    const std::vector<std::vector<Position> > getRotations() const;
 
     void setPosition(int x, int y);
 
@@ -34,10 +38,14 @@ class TetrominoModel {
      */
     TetrominoModel* reset();
 
+    TetrominoModel(const TetrominoModel& other);
+
+    TetrominoModel& operator=(const TetrominoModel& other);
+
    protected:
     std::vector<Position> rotations[4];
     const TetrominoType id;
-    int currentRotation = 0;
+    int currentRotationIndex = 0;
     int offsetx, offsety;
     int initialOffsetx, initialOffsety;
 };

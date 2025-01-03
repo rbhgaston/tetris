@@ -21,8 +21,18 @@ class TetrisController {
     TetrisController();
 
     // getters
+    const BoardModel* getBoard() const;
     const TetrominoModel* getCurTetromino() const;
+    const TetrominoModel* getNextTetromino() const;
+    const TetrominoModel* getHoldTetromino() const;
+    const bool getHoldUsed() const;
+    const bool getPlayerAction() const;
+    const double getLockDelay() const;
+    const double getCollisionTime() const;
     const double getSpeed() const;
+    const int getScore() const;
+    const int getLevel() const;
+    const int getLines() const;
 
     // setters
     void setCurTetromino(TetrominoModel* tetromino);
@@ -76,6 +86,14 @@ class TetrisController {
     void updateSpeed();
 
     void resetBag();
+
+    std::vector<int> getBag() const;
+
+    ~TetrisController();
+
+    TetrisController(const TetrisController& other);
+
+    TetrisController& operator=(const TetrisController& other);
 
    private:
     // models

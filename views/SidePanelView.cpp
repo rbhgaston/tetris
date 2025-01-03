@@ -35,3 +35,35 @@ void SidePanelView::draw(int score, int level, int lines,
         holdTetrominoView->draw(TILE_SIZE * BOARD_WIDTH + 10, 260);
     }
 }
+
+const TetrominoView *SidePanelView::getNextTetrominoView() const {
+    return nextTetrominoView;
+}
+
+const TetrominoView *SidePanelView::getHoldTetrominoView() const {
+    return holdTetrominoView;
+}
+
+SidePanelView::SidePanelView(const SidePanelView &other) {
+    nextTetrominoView = new TetrominoView(*other.getNextTetrominoView());
+    holdTetrominoView = new TetrominoView(*other.getHoldTetrominoView());
+}
+
+SidePanelView &SidePanelView::operator=(const SidePanelView &other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    delete nextTetrominoView;
+    delete holdTetrominoView;
+
+    nextTetrominoView = new TetrominoView(*other.getNextTetrominoView());
+    holdTetrominoView = new TetrominoView(*other.getHoldTetrominoView());
+
+    return *this;
+}
+
+SidePanelView::~SidePanelView() {
+    delete nextTetrominoView;
+    delete holdTetrominoView;
+}

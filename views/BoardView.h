@@ -15,6 +15,12 @@ class BoardView {
 
     void draw() const;
 
+    const BoardModel* getBoard() const;
+
+    BoardView(const BoardView& other);
+    BoardView& operator=(const BoardView& other);
+    ~BoardView();
+
    private:
     BoardModel* board;
 };

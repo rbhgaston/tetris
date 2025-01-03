@@ -14,3 +14,19 @@ void TetrominoView::draw(int x, int y) const {
 void TetrominoView::setTetromino(TetrominoModel *tetromino) {
     this->tetromino = tetromino;
 }
+
+const TetrominoModel *TetrominoView::getTetromino() const { return tetromino; }
+
+TetrominoView::TetrominoView(const TetrominoView &other) {
+    tetromino = new TetrominoModel(*other.getTetromino());
+}
+
+TetrominoView &TetrominoView::operator=(const TetrominoView &other) {
+    if (this != &other) {
+        delete tetromino;
+        tetromino = new TetrominoModel(*other.getTetromino());
+    }
+    return *this;
+}
+
+TetrominoView::~TetrominoView() { delete tetromino; }

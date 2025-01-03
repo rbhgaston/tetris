@@ -14,3 +14,19 @@ void BoardView::draw() const {
         }
     }
 }
+
+const BoardModel* BoardView::getBoard() const { return board; }
+
+BoardView::BoardView(const BoardView& other) {
+    board = new BoardModel(*other.getBoard());
+}
+
+BoardView& BoardView::operator=(const BoardView& other) {
+    if (this != &other) {
+        delete board;
+        board = new BoardModel(*other.getBoard());
+    }
+    return *this;
+}
+
+BoardView::~BoardView() { delete board; }

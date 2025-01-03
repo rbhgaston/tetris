@@ -19,6 +19,13 @@ class SidePanelView {
     void draw(int score, int level, int lines, TetrominoModel *holdTetromino,
               TetrominoModel *nextTetromino) const;
 
+    const TetrominoView *getNextTetrominoView() const;
+    const TetrominoView *getHoldTetrominoView() const;
+
+    SidePanelView(const SidePanelView &other);
+    SidePanelView &operator=(const SidePanelView &other);
+    ~SidePanelView();
+
    private:
     TetrominoView *nextTetrominoView;
     TetrominoView *holdTetrominoView;

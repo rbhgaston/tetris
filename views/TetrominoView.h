@@ -21,6 +21,11 @@ class TetrominoView {
     TetrominoView(TetrominoModel *tetromino);
     void draw(int x, int y) const;
     void setTetromino(TetrominoModel *tetromino);
+    const TetrominoModel *getTetromino() const;
+
+    TetrominoView(const TetrominoView &other);
+    TetrominoView &operator=(const TetrominoView &other);
+    ~TetrominoView();
 
    private:
     TetrominoModel *tetromino;

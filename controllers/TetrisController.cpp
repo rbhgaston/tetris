@@ -16,6 +16,14 @@ const TetrominoModel* TetrisController::getCurTetromino() const {
     return curTetromino;
 }
 
+const TetrominoModel* TetrisController::getHoldTetromino() const {
+    return holdTetromino;
+}
+
+const TetrominoModel* TetrisController::getNextTetromino() const {
+    return nextTetromino;
+}
+
 void TetrisController::setCurTetromino(TetrominoModel* tetromino) {
     curTetromino = tetromino;
     curTetrominoView->setTetromino(tetromino);
@@ -195,6 +203,16 @@ void TetrisController::updateScore(int lines) {
     level = this->lines / 10;
 }
 
+const BoardModel* TetrisController::getBoard() const { return &board; }
+const bool TetrisController::getHoldUsed() const { return holdUsed; }
+const bool TetrisController::getPlayerAction() const { return playerAction; }
+const int TetrisController::getScore() const { return score; }
+const int TetrisController::getLevel() const { return level; }
+const int TetrisController::getLines() const { return lines; }
+const double TetrisController::getLockDelay() const { return lockDelay; }
+const double TetrisController::getCollisionTime() const {
+    return collisionTime;
+}
 const double TetrisController::getSpeed() const { return speed; }
 
 void TetrisController::updateSpeed() {
@@ -202,3 +220,39 @@ void TetrisController::updateSpeed() {
 }
 
 void TetrisController::resetBag() { bag = {0, 1, 2, 3, 4, 5, 6}; }
+
+std::vector<int> TetrisController::getBag() const { return bag; }
+
+TetrisController::~TetrisController() {
+    delete curTetromino;
+    delete nextTetromino;
+    delete holdTetromino;
+
+    delete boardView;
+    delete curTetrominoView;
+    delete sidePanelView;
+}
+
+TetrisController::TetrisController(const TetrisController& other) {
+    board = BoardModel(*other.getBoard());
+    curTetromino = new TetrominoModel(*other.getCurTetromino());
+    nextTetromino = new TetrominoModel(*other.getNextTetromino());
+    holdTetromino = new TetrominoModel(*other.getHoldTetromino());
+
+    boardView = new BoardView(&board);
+    curTetrominoView = new TetrominoView(curTetromino);
+    sidePanelView = new SidePanelView();
+
+    holdUsed = other.getHoldUsed();
+    playerAction = other.getPlayerAction();
+
+    lockDelay = other.getLockDelay();
+    collisionTime = other.getCollisionTime();
+    speed = other.getSpeed();
+
+    score = other.getScore();
+    level = other.getLevel();
+    lines = other.getLines();
+
+    bag = other.getBag();
+}
